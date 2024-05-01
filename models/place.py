@@ -6,6 +6,7 @@ from sqlalchemy.orm import relationship
 from os import getenv
 from models.review import Review
 
+
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
@@ -19,7 +20,10 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, default=0)
     latitude = Column(Float)
     longitude = Column(Float)
-    reviews = relationship('Review', backref='place', cascade='all, delete-orphan')
+    reviews = relationship(
+        'Review', backref='place',
+        cascade='all, delete-orphan'
+    )
     amenity_ids = []
 
     if getenv('HBNB_TYPE_STORAGE') != 'db':

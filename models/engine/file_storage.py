@@ -19,7 +19,7 @@ class FileStorage:
         """Returns a dictionary of models currently in storage
 
         Args:
-            cls (class, optional): filters the result 
+            cls (class, optional): filters the result
             to inlude only objects of the specified class
 
         Returns:
@@ -61,8 +61,10 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
-        except FileNotFoundError, json.decoder.JSONDecodeError:
+                    self.all()[key] = classes[val['__class__']](**val)
+        except FileNotFoundError:
+            pass
+        except json.decoder.JSONDecodeError:
             pass
 
     def delete(self, obj=None):
@@ -72,8 +74,10 @@ class FileStorage:
         """
         if obj is None:
             return
-        obj_del_key =  "{}.{}".formt(obj.__class__.__name__, obj.id)
+        obj_del_key = "{}.{}".formt(obj.__class__.__name__, obj.id)
         try:
             del FileStorage.__objects[obj_del_key]
-        except AttributeError, KeyboardInterrupt:
+        except AttributeError:
+            pass
+        except KeyboardInterrupt:
             pass
